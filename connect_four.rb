@@ -58,9 +58,9 @@ class Game
   end
 
   def begin_game
-    puts "Welcome to Connect-Four! The goal of the game is to connect 4 pieces in any orientation on the 6x7 playing grid. Player 1 - \u+25E6, please input your name:"
+    puts "Welcome to Connect-Four! The goal of the game is to connect 4 pieces in any orientation on the 6x7 playing grid. Player 1 - ○, please input your name:"
     @player1 = get_answer
-    puts "Player 2, \u+25CF, please input your name:"
+    puts "Player 2, ●, please input your name:"
     @player2 = get_answer
     board FINISH
     loop_game
