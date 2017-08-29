@@ -1,3 +1,5 @@
+#must fix win_check errors, rewrite methods
+
 class Player
 
   def initialize(name, symbol)
