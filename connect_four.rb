@@ -40,8 +40,8 @@ class Game
     @player1 = get_answer
     puts "Player 2, ●, please input your name:"
     @player2 = get_answer
-    board FINISH
-    loop_game
+    board
+    loop
   end
 
   def end_game(player)
@@ -51,7 +51,7 @@ class Game
   end
 
   def restart_game
-    board = [
+    @board = [
      %w(_ _ _ _ _ _ _),
      %w(_ _ _ _ _ _ _),
      %w(_ _ _ _ _ _ _),
@@ -60,16 +60,16 @@ class Game
      %w(_ _ _ _ _ _ _),
      %w(1 2 3 4 5 6 7)]
    @turns = 1
-   puts "Game restarted!"; board
-   loop_game
+   puts "Restart!"; board
+   loop
  end
 
-  def loop_game
+  def loop
     until winning_condition?
       player = @turns.odd ? @player1 : @player2
       puts "#{player}, in which column do you want to drop your piece?"
       answer = get_answer.to_i
-      valid_move?(answer, player) ? make_move(answer, player) : (p 'Error, try again': loop_game)
+      valid_move?(answer, player) ? make_move(answer, player) : (p 'Error, try again': loop)
     end
   end_game(player)
   end
@@ -101,57 +101,26 @@ class Game
   end
 
   def winning_condition?
-    horizontal? || vertical? || diagonal? || anti_diagonal? ? true : false
+    horizontal? || vertical? || diagonal? || reverse_diagonal? ? true : false
   end
 
   def four_connected?
-    true if (array[index..index+3].all?{|color| color == "○"} || array[index..index+3].all?{|color| color == "●"})
   end
 
   def horizontal?
-    6.times do |row|
-      array = @board[row]
-      4.times { |index| four_connected? (array, index) ? (return true) : next }
-    end
-    false
   end
 
   def vertical?
-    6.times do |index|
-      array = @board.collect { |row| row[index] }
-      array.pop;
-      3.times { |index| four_connected?(array, index) ? (return true) : next }
-    end
-    false
+
   end
 
-  def diagonal?(board = @board, collection = [])
-    diagonal_length, row, position = 4, 2, 0
-    until collection.length == 6
-      array = []
-      diagonal_length.times { |index| array << board[index + row][index + position] }
-      collection << array
-      case collection.length
-      when 0...3 then row -= 1; diagonal_length += 1
-      when 3 then position += 1
-      when 4..6 then diagonal_length -= 1; position += 1
-      end
-    end
-    collection.each do |diagonal|
-      diagonal.length.divmod(4).inject(0, :+).times { |index| four_connected?(diagonal, index) ? (return true) : false }
-    end
-    false
+  def diagonal?
   end
 
-  def anti_diagonal?
-    board = @board.reverse; board.shift
-    diagonal?(board)
+  def reverse_diagonal?
   end
 
 end
 
 game = Game.new
 game.begin_game()
-
-
-end
